@@ -118,7 +118,15 @@ def get_db():
             
 # part->8 create an app from fastapi
 from fastapi import FastAPI,Path,Depends,HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 app=FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 #part->9 get one student
 from sqlalchemy.orm import Session
@@ -195,6 +203,9 @@ def delect(std_id:str=Path(...),
 # get all students (filter,sort,paginate) 
 from fastapi import Query
 from sqlalchemy import func
+from pathlib import Path as FilePath
+from fastapi.staticfiles import StaticFiles
+
 Sort_Filters=['marks','age','name']
 Sort_order=['asc','desc']
 @app.get('/students',tags=['GET ROUTE'])
@@ -235,6 +246,13 @@ def get_all(course:str|None=Query(None,description='show the student with this c
         "total_students":total,
         "students":std
     }
+
+
+app.mount(
+    "/",
+    StaticFiles(directory=FilePath(__file__).parent / "static", html=True),
+    name="dashboard",
+)
             
             
     

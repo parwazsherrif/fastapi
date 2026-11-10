@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#10121b" />
+    <meta name="description" content="A calm, clear workspace for managing student records." />
+    <title>Orbit — Student workspace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="Orbit home">
+          <span class="brand-mark"><span></span><span></span><span></span></span>
+          <span class="brand-name">orbit<span>.</span></span>
+        </a>
+
+        <div class="workspace-label">WORKSPACE</div>
+        <nav class="side-nav" aria-label="Main navigation">
+          <a class="nav-link active" href="#overview">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>
+            Overview
+          </a>
+          <a class="nav-link" href="#students">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.25"/><path d="M3.5 19v-1.25a5.5 5.5 0 0 1 11 0V19zM16 5.1a3.3 3.3 0 0 1 0 6.2m1.1 2.2a4.7 4.7 0 0 1 3.4 4.5V19h-3"/></svg>
+            Students
+            <span class="nav-count" id="nav-count">—</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="help-card">
+            <div class="help-icon">✳</div>
+            <strong>Everything in sync</strong>
+            <p>Your student records, all in one calm place.</p>
+            <span class="connection"><i></i><span id="connection-label">Connecting to your API</span></span>
+          </div>
+          <div class="profile">
+            <div class="avatar avatar-you">O</div>
+            <div class="profile-copy"><strong>Workspace</strong><span>Student admin</span></div>
+            <span class="profile-dots">···</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content" id="overview">
+        <header class="topbar">
+          <div class="breadcrumb"><span>Workspace</span><b>/</b><strong>Overview</strong></div>
+          <div class="topbar-actions">
+            <span class="today-label" id="today-label"></span>
+            <button class="icon-button" id="refresh-button" aria-label="Refresh student records" title="Refresh">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4.6 9a7.5 7.5 0 0 1 12.6-2L20 12M4 17v-5h5m10.4 3a7.5 7.5 0 0 1-12.6 2L4 12"/></svg>
+            </button>
+            <button class="avatar avatar-top" aria-label="Workspace profile">O</button>
+          </div>
+        </header>
+
+        <section class="welcome-row">
+          <div>
+            <div class="eyebrow"><span class="sparkle">✳</span> YOUR STUDENT SPACE</div>
+            <h1>A little more <span>in sync.</span></h1>
+            <p class="welcome-copy">A clear view of your students, their progress, and what’s next.</p>
+          </div>
+          <button class="primary-button" id="add-student-button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            Add student
+          </button>
+        </section>
+
+        <section class="stats-grid" aria-label="Student summary">
+          <article class="stat-card stat-highlight">
+            <div class="stat-top"><span class="stat-label">Total students</span><span class="stat-icon icon-lilac">↗</span></div>
+            <div class="stat-value" id="stat-total">—</div>
+            <div class="stat-foot"><span class="status-dot"></span> Student records in your workspace</div>
+            <div class="stat-decoration decoration-orbit"></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-label">Average marks</span><span class="stat-icon icon-mint">⌁</span></div>
+            <div class="stat-value"><span id="stat-average">—</span><small>%</small></div>
+            <div class="stat-foot">Across all loaded student records</div>
+            <div class="mini-meter"><span id="average-meter"></span></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-label">Courses represented</span><span class="stat-icon icon-peach">✳</span></div>
+            <div class="stat-value" id="stat-courses">—</div>
+            <div class="stat-foot">Distinct courses in your records</div>
+            <div class="course-pips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          </article>
+        </section>
+
+        <section class="insights-grid">
+          <article class="panel pulse-panel">
+            <div class="panel-heading">
+              <div><span class="section-kicker">AT A GLANCE</span><h2>Class pulse</h2></div>
+              <span class="live-badge"><i></i> Live data</span>
+            </div>
+            <div class="pulse-content">
+              <div class="pulse-score">
+                <div class="pulse-ring"><span id="pulse-average">—</span><small>avg</small></div>
+                <div><strong>Looking good.</strong><p>A snapshot of marks across the class.</p></div>
+              </div>
+              <div class="pulse-divider"></div>
+              <div class="grade-row">
+                <div class="grade-copy"><span>Students scoring 80+</span><strong id="high-score-count">—</strong></div>
+                <div class="grade-track"><span id="high-score-meter"></span></div>
+                <div class="grade-caption"><span>Class progress</span><span id="high-score-percent">—</span></div>
+              </div>
+            </div>
+          </article>
+          <article class="panel course-panel">
+            <div class="panel-heading">
+              <div><span class="section-kicker">YOUR CLASS</span><h2>Course mix</h2></div>
+              <span class="subtle-count" id="course-total">0 courses</span>
+            </div>
+            <div class="course-list" id="course-list">
+              <div class="empty-inline">Course insights will show up when you have students.</div>
+            </div>
+          </article>
+        </section>
+
+        <section class="students-section" id="students">
+          <div class="section-title-row">
+            <div><span class="section-kicker">THE ROSTER</span><h2>Your students <span class="title-count" id="roster-count">0</span></h2></div>
+            <button class="text-button" id="clear-filters">Clear filters <span>↗</span></button>
+          </div>
+          <div class="table-toolbar">
+            <label class="search-box">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.2 4.2"/></svg>
+              <input id="search-input" type="search" placeholder="Search students..." autocomplete="off" />
+              <kbd>⌘ K</kbd>
+            </label>
+            <div class="toolbar-filters">
+              <label class="select-wrap">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10m-7 6h4"/></svg>
+                <select id="course-filter" aria-label="Filter by course"><option value="">All courses</option></select>
+              </label>
+              <label class="select-wrap sort-select">
+                <select id="sort-select" aria-label="Sort students">
+                  <option value="name-asc">Name A–Z</option>
+                  <option value="name-desc">Name Z–A</option>
+                  <option value="marks-desc">Highest marks</option>
+                  <option value="marks-asc">Lowest marks</option>
+                  <option value="age-asc">Age: youngest</option>
+                  <option value="age-desc">Age: oldest</option>
+                </select>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5-5 5 5M7 14l5 5 5-5"/></svg>
+              </label>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>STUDENT</th><th>COURSE</th><th>AGE</th><th>MARKS</th><th>GRADE</th><th><span class="sr-only">Actions</span></th></tr></thead>
+              <tbody id="student-rows">
+                <tr><td colspan="6"><div class="loading-state"><span class="loader"></span> Finding your students...</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <span id="pagination-summary">—</span>
+            <div class="pagination-controls">
+              <button class="page-button" id="previous-page" aria-label="Previous page">←</button>
+              <span id="page-indicator">1 / 1</span>
+              <button class="page-button" id="next-page" aria-label="Next page">→</button>
+            </div>
+          </div>
+        </section>
+
+        <footer class="footer"><span>Made for a little more clarity <span class="footer-star">✳</span></span><a href="/docs" target="_blank" rel="noreferrer">API documentation ↗</a></footer>
+      </main>
+    </div>
+
+    <dialog class="student-dialog" id="student-dialog" aria-labelledby="dialog-title">
+      <form id="student-form" novalidate>
+        <div class="dialog-top">
+          <div><span class="section-kicker" id="dialog-kicker">NEW RECORD</span><h2 id="dialog-title">Add a student</h2><p id="dialog-description">A few details and you’re all set.</p></div>
+          <button type="button" class="dialog-close" id="close-dialog" aria-label="Close dialog">×</button>
+        </div>
+        <div class="form-grid">
+          <label class="form-field" id="id-field"><span>Student ID</span><input name="id" placeholder="e.g. S001" required maxlength="50" /><small>A unique ID for this student</small></label>
+          <label class="form-field"><span>Full name</span><input name="name" placeholder="e.g. Alex Morgan" required minlength="2" maxlength="100" /></label>
+          <label class="form-field"><span>Email address</span><input name="email" type="email" placeholder="alex@example.com" required /></label>
+          <label class="form-field"><span>Age</span><input name="age" type="number" placeholder="18" min="10" max="39" required /></label>
+          <label class="form-field form-wide"><span>Course</span><input name="course" placeholder="e.g. Web development" required maxlength="100" /></label>
+          <label class="form-field form-wide"><span>Marks <em>10–100</em></span><input name="marks" type="number" placeholder="Enter a score" min="10.01" max="100" step="any" required /></label>
+        </div>
+        <div class="form-error" id="form-error" role="alert"></div>
+        <div class="dialog-actions">
+          <button type="button" class="secondary-button" id="cancel-dialog">Cancel</button>
+          <button type="submit" class="primary-button" id="save-button">Save student <span>↗</span></button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>

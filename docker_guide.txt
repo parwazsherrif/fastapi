@@ -1,0 +1,69 @@
+
+DOCKER - STEP BY STEP
+
+Step 1: Install Docker Desktop (first time only)
+Download it from docker.com and install it.
+On Windows, say yes to WSL 2 and restart the computer.
+
+Step 2: Open Docker Desktop
+Wait until the whale icon in the menu bar stops moving.
+
+Step 3: Check Docker is installed (first time only)
+    docker --version
+    docker compose version
+Both should print a version number.
+
+Step 4: Run a test container (first time only)
+    docker run hello-world
+If you see "Hello from Docker!", Docker works.
+
+Step 5: Open your project in Terminal
+    cd "/Users/tanishqvyas/FastAPI and Postgres"
+
+Step 6: Stop your local server
+If uvicorn is running, press Ctrl + C.
+
+Step 7: Create requirements.txt
+The list of packages our box needs.
+
+Step 8: Create Dockerfile
+The recipe: Python, then packages, then our code, then start the API.
+
+Step 9: Create .dockerignore
+The files we don't want inside the box, like .env.
+
+Step 10: Create docker-compose.yml
+Starts two boxes: the API box and the PostgreSQL box.
+
+Step 11: Build and start
+    docker compose up --build
+Wait for: Uvicorn running on http://0.0.0.0:8000
+
+Step 12: Open the API
+Go to http://localhost:8000/docs
+
+Step 13: Add a student
+POST one with /CreateStudent, then check it with GET /students.
+
+Step 14: See the data in pgAdmin
+Open the Docker DB server (host 127.0.0.1, port 15432, password postgres),
+then studentdb -> Query Tool:
+    SELECT * FROM student_records;
+
+Step 15: Show that the data stays
+Press Ctrl + C, run docker compose up again, and GET the student.
+It's still there.
+
+Step 16: Stop everything
+    docker compose down
+
+After you change code: go back to Step 11 (--build is needed).
+
+
+IF SOMETHING GOES WRONG
+
+You see: command not found: docker
+Fix:     Docker isn't installed. Do Step 1, then open a new Terminal.
+
+You see: Cannot connect to the Docker daemon
+Fix:     Docker Desktop isn't open. Do Step 2.

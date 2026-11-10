@@ -1,0 +1,29 @@
+﻿# Two containers: our API + a PostgreSQL database
+services:
+  db:
+    image: postgres:16
+    ports:
+      - "15432:5432"                         # Mac's 15432 -> container's 5432 (for pgAdmin)
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: studentdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data      # keeps the data after a restart
+    healthcheck:                               # "is the database ready yet?"
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      retries: 10
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"                            # your Mac's 8000 -> container's 8000
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/studentdb
+    depends_on:
+      db:
+        condition: service_healthy             # start the API only after the DB is ready
+
+volumes:
+  pgdata:

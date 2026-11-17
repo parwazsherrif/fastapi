@@ -1,3 +1,5 @@
+const API_BASE_URL = "https://fastapi-73x0.onrender.com";
+
 const state = {
   students: [],
   page: 1,
@@ -41,7 +43,7 @@ function initials(name) {
 async function request(path, options = {}) {
   let response;
   try {
-    response = await fetch(path, {
+    response = await fetch(new URL(path, API_BASE_URL), {
       ...options,
       headers: { ...(options.body ? { "Content-Type": "application/json" } : {}), ...options.headers },
     });
